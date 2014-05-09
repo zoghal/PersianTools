@@ -80,5 +80,33 @@ class Convertor {
 		}
 		return str_replace(self::$arabic_numbers, self::$persian_numbers, $text);
 	}    
+
+/**
+ * Convertor::english2persianNumbers()
+ * Convert English Numbers To Persian Numbers [1 => ۱]
+ * @param mixed $text
+ * @return
+ */
+	public static function english2persianNumbers($text) {
+		if (!is_string($text) || empty($text)) {
+			return false;
+		}
+		return str_replace(self::$english_numbers, self::$persian_numbers, $text);
+	}    
+
+
+/**
+ * Convertor::persian2englishNumbers()
+ * Convert Persian Numbers To English Numbers [۱ => 1]
+ * @param mixed $text
+ * @return
+ */
+	public static function persian2englishNumbers($text) {
+		if (!is_string($text) || empty($text)) {
+			return false;
+		}
+		return str_replace( self::$persian_numbers, self::$english_numbers, $text);
+	}    
+
 }
 
