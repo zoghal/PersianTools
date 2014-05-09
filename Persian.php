@@ -1,7 +1,5 @@
 <?php
 namespace Persian;
-
-class PersianTools {
-
-
-}
+$toolsPath = 'Tools' . DIRECTORY_SEPARATOR;
+include_once $toolsPath . 'Convertor.php';
+?>
