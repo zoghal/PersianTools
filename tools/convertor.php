@@ -65,7 +65,7 @@ class Convertor {
 		if (!is_string($text) || empty($text)) {
 			return false;
 		}
-		return str_replace(self::$arabic_chars, self::$persian_Chars, $text);
+		return str_replace(self::$arabic_chars, self::$persian_chars, $text);
 	}
 
 /**
