@@ -1,0 +1,19 @@
+{
+    "name": "zoghal/persian-tools",
+    "description": "Persian Tools - some PHP utility for Persian Language",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Zoghal\\PersianTools\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Saleh Souzanchi",
+            "email": "saleh.souzanchi@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^10.3"
+    }
+}
