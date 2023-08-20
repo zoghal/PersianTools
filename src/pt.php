@@ -2,9 +2,21 @@
 
 namespace Zoghal\PersianTools;
 
-class PT{
+/**
+ * PT: PersianTools Main Class
+ */
+class PT
+{
 
-    public static function Virastar($text){
+    
+    /**
+     * Virastar
+     *
+     * @param  mixed $text
+     * @return void
+     */
+    public static function Virastar($text)
+    {
 
     }
 }
