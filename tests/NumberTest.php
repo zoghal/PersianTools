@@ -8,6 +8,11 @@ final class NumberTest extends TestCase
     {
     }
 
+    /**
+     * testIsPersian
+     *
+     * @return void
+     */
     public function testIsPersian(): void
     {
         $resualt = Number::isPersian('۱۲۳۴۲۱');
@@ -20,7 +25,11 @@ final class NumberTest extends TestCase
         $this->assertFalse($resualt);
     }
 
-
+    /**
+     * testIsLatin
+     *
+     * @return void
+     */
     public function testIsLatin(): void
     {
         $resualt = Number::isLatin('۱۲۳۴۲۱');
@@ -33,7 +42,11 @@ final class NumberTest extends TestCase
         $this->assertFalse($resualt);
     }
 
-
+    /**
+     * testIsArabic
+     *
+     * @return void
+     */
     public function testIsArabic(): void
     {
         $resualt = Number::isArabic('۱۲۳۴۲۱');
@@ -44,5 +57,58 @@ final class NumberTest extends TestCase
 
         $resualt = Number::isArabic('٩٨٧٦٥٤٣٢١٠');
         $this->assertTrue($resualt);
+    }
+
+    /**
+     * testConvertToPersian
+     *
+     * @return void
+     */
+    public function testConvertToPersian(): void
+    {
+        $resualt = Number::convertToPersian('٠١٢٣٤٥٦٧٨٩');
+        $this->assertSame('۰۱۲۳۴۵۶۷۸۹', $resualt);
+
+        $resualt = Number::convertToPersian('0123456789');
+        $this->assertSame('۰۱۲۳۴۵۶۷۸۹', $resualt);
+
+        $resualt = Number::convertToPersian('٠١٢٣٤٥٦٧٨٩ | 9876543210');
+        $this->assertSame('۰۱۲۳۴۵۶۷۸۹ | ۹۸۷۶۵۴۳۲۱۰', $resualt);
+    }
+
+    
+    /**
+     * testConvertToArabic
+     *
+     * @return void
+     */
+    public function testConvertToArabic(): void
+    {
+        $resualt = Number::convertToArabic('٠١٢٣٤٥٦٧٨٩');
+        $this->assertSame('٠١٢٣٤٥٦٧٨٩', $resualt);
+
+        $resualt = Number::convertToArabic('0123456789');
+        $this->assertSame('٠١٢٣٤٥٦٧٨٩', $resualt);
+
+        $resualt = Number::convertToArabic('۰۱۲۳۴۵۶۷۸۹ | 9876543210');
+        $this->assertSame('٠١٢٣٤٥٦٧٨٩ | ٩٨٧٦٥٤٣٢١٠', $resualt);
+    }
+
+    
+    /**
+     * testConvertToLatin
+     *
+     * @return void
+     */
+    public function testConvertToLatin(): void
+    {
+        $resualt = Number::convertToLatin('٠١٢٣٤٥٦٧٨٩');
+        $this->assertSame('0123456789', $resualt);
+
+        $resualt = Number::convertToLatin('۰۱۲۳۴۵۶۷۸۹');
+        $this->assertSame('0123456789', $resualt);
+
+        $resualt = Number::convertToLatin('٠١٢٣٤٥٦٧٨٩ | ۹۸۷۶۵۴۳۲۱۰');
+        $this->assertSame('0123456789 | 9876543210', $resualt);
     }
 }
