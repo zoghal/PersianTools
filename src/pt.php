@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Zoghal\PersianTools;
 
@@ -7,6 +7,17 @@ namespace Zoghal\PersianTools;
  */
 class PT
 {
+    
+    /**
+     * Text
+     *
+     * @param  mixed $text
+     * @return void
+     */
+    public static function Text($text)
+    {
+
+    }
 
     
     /**
