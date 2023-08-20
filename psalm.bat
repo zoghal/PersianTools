@@ -1,0 +1,1 @@
+vendor\bin\psalm %1
