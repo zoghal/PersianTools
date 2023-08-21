@@ -76,7 +76,6 @@ final class NumberTest extends TestCase
         $this->assertSame('۰۱۲۳۴۵۶۷۸۹ | ۹۸۷۶۵۴۳۲۱۰', $resualt);
     }
 
-    
     /**
      * testConvertToArabic
      *
@@ -94,7 +93,6 @@ final class NumberTest extends TestCase
         $this->assertSame('٠١٢٣٤٥٦٧٨٩ | ٩٨٧٦٥٤٣٢١٠', $resualt);
     }
 
-    
     /**
      * testConvertToLatin
      *
@@ -112,24 +110,64 @@ final class NumberTest extends TestCase
         $this->assertSame('0123456789 | 9876543210', $resualt);
     }
 
-    public function testConvertToWord(): void{
-        $resualt = Number::convertToWord('١٢٣٤٥٦٧','fa_IR');
+    /**
+     * testConvertToWord
+     *
+     * @return void
+     */
+    public function testConvertToWord(): void
+    {
+        $resualt = Number::convertToWord('١٢٣٤٥٦٧', 'fa_IR');
         $this->assertSame('یک میلیون و دویست و سی و چهار هزار و پانصد و شصت و هفت', $resualt);
 
-        $resualt = Number::convertToWord('-١٢٣٤٥٦٧','fa_IR');
+        $resualt = Number::convertToWord('-١٢٣٤٥٦٧', 'fa_IR');
         $this->assertSame('منفی یک میلیون و دویست و سی و چهار هزار و پانصد و شصت و هفت', $resualt);
 
-        $resualt = Number::convertToWord('۱۲۳۴۵۶۷','ar');
+        $resualt = Number::convertToWord('۱۲۳۴۵۶۷', 'ar');
         $this->assertSame('مليون و مائتان و أربعة و ثلاثون ألف و خمسة مائة و سبعة و ستون', $resualt);
 
-        $resualt = Number::convertToWord('-۱۲۳۴۵۶۷','ar');
+        $resualt = Number::convertToWord('-۱۲۳۴۵۶۷', 'ar');
         $this->assertSame('ناقص مليون و مائتان و أربعة و ثلاثون ألف و خمسة مائة و سبعة و ستون', $resualt);
 
-        $resualt = Number::convertToWord(1234567,'en');
+        $resualt = Number::convertToWord(1234567, 'en');
         $this->assertSame('one million two hundred thirty-four thousand five hundred sixty-seven', $resualt);
 
-        $resualt = Number::convertToWord(-1234567,'en');
+        $resualt = Number::convertToWord(-1234567, 'en');
         $this->assertSame('minus one million two hundred thirty-four thousand five hundred sixty-seven', $resualt);
+    }
+
+    /**
+     * testFormatByLocale
+     *
+     * @return void
+     */
+    public function testFormatByLocale(): void
+    {
+        $resualt = Number::format(-1234567.217, 'fa');
+        $this->assertSame('‎−۱٬۲۳۴٬۵۶۷٫۲۱۷', $resualt);
+
+        $resualt = Number::format(-1234567.217, 'ar');
+        $this->assertSame('؜-١٬٢٣٤٬٥٦٧٫٢١٧', $resualt);
+
+        $resualt = Number::format(-1234567.217, 'en');
+        $this->assertSame('-1,234,567.217', $resualt);
+    }
+    
+    /**
+     * testFormatByCustomParameters
+     *
+     * @return void
+     */
+    public function testFormatByCustomParameters(): void
+    {
+        $resualt = Number::format(-1234567.217, 'fa', 2, ' \ ', ' * ');
+        $this->assertSame('‎−۱ * ۲۳۴ * ۵۶۷ \ ۲۲', $resualt);
+
+        $resualt = Number::format(-1234567.217, 'ar', 2, ' | ', ' > ');
+        $this->assertSame('؜-١ > ٢٣٤ > ٥٦٧ | ٢٢', $resualt);
+
+        $resualt = Number::format(-1234567.217, 'en', 2, ' ^ ', ' <> ');
+        $this->assertSame('-1 <> 234 <> 567 ^ 22', $resualt);
     }
 
 }

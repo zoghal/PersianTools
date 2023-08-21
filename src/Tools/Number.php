@@ -97,6 +97,7 @@ class Number
      * convertToWord convert numbers to human-readable words format
      *
      * @param  mixed $number
+     * @param  mixed $locale fa|ar|en
      * @return void
      */
     public static function convertToWord($number, $locale = 'fa')
@@ -104,6 +105,37 @@ class Number
         if (!is_numeric($number) && (self::isArabic($number) || self::isPersian($number))) {
             $number = (float)self::convertToLatin($number);
         }
-        return \NumberFormatter::create($locale, \NumberFormatter::SPELLOUT  )->format($number);
+        return \NumberFormatter::create($locale, \NumberFormatter::SPELLOUT)->format($number);
     }
+
+    /**
+     * localeFormatter
+     *
+     * @param  mixed $number
+     * @param  mixed $locale fa|ar|en
+     * @return void
+     */
+    public static function format($number, $locale = 'fa', $decimals = null, $decimalPoint = null, $thousandsSep = null)
+    {
+        if (!is_numeric($number) && (self::isArabic($number) || self::isPersian($number))) {
+            $number = (float)self::convertToLatin($number);
+        }
+
+        $fmt = \NumberFormatter::create($locale, \NumberFormatter::DECIMAL);
+        
+        if ($decimalPoint !== null) {
+            $fmt->setSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL, $decimalPoint);
+        }
+
+        if ($thousandsSep !== null) {
+            $fmt->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, $thousandsSep);
+        }
+
+        if ($decimals !== null) {
+            $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
+        }
+
+        return $fmt->format($number);
+    }
+
 }
