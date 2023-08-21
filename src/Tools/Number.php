@@ -92,4 +92,18 @@ class Number
         }
         return $number;
     }
+
+    /**
+     * convertToWord convert numbers to human-readable words format
+     *
+     * @param  mixed $number
+     * @return void
+     */
+    public static function convertToWord($number, $locale = 'fa')
+    {
+        if (!is_numeric($number) && (self::isArabic($number) || self::isPersian($number))) {
+            $number = (float)self::convertToLatin($number);
+        }
+        return \NumberFormatter::create($locale, \NumberFormatter::SPELLOUT  )->format($number);
+    }
 }
