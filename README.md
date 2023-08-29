@@ -1,4 +1,14 @@
-PersianTools
-============
+# PersianTools
 
-Persian Tools - some PHP utility for Persian Language[arabic2persian,virastar,date convertor]
+
+Persian-Tools: An anthology of a variety of tools for the Persian language in PHP (Validation, Localization, Converting and Normalition data to correct Persian).
+
+
+# Install
+It will be updated soon...
+
+
+## Usage
+
+
+It will be updated soon...

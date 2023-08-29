@@ -1,7 +1,8 @@
 {
     "name": "zoghal/persian-tools",
-    "description": "Persian Tools - some PHP utility for Persian Language",
+    "description": "Persian-Tools: An anthology of a variety of tools for the Persian language in PHP (Validation, Localization, Converting and Normalition data to correct Persian).",
     "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Zoghal\\PersianTools\\": "src/"
