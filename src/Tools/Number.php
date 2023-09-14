@@ -151,7 +151,7 @@ class Number
     public static function toWord($number, $locale = 'fa')
     {
         if (self::hasArabic($number)) {
-          
+
             $number = (int)self::toLatinNumerals($number);
         }
         return \NumberFormatter::create($locale, \NumberFormatter::SPELLOUT)->format($number);
@@ -185,5 +185,16 @@ class Number
         }
 
         return $fmt->format($number);
+    }
+    
+    /**
+     * Checks if the given value contains only number digits.
+     *
+     * @param  mixed $number
+     * @return bool
+     */
+    public static function isNumerals($number): bool
+    {
+        return (bool)preg_match("/^[\x{0660}-\x{0669}\x{06F0}-\x{06F9}0-9]+$/iu", (string)$number);
     }
 }

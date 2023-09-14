@@ -265,4 +265,18 @@ final class NumberTest extends TestCase
         $resualt = Number::format(-1234567.217, 'en', 2, ' ^ ', ' <> ');
         $this->assertSame('-1 <> 234 <> 567 ^ 22', $resualt);
     }
+
+
+
+    public function testIsNumberals(): void
+    {
+        $resualt = Number::isNumerals(123);
+        $this->assertTrue($resualt);
+
+        $resualt = Number::isNumerals('1۱23');
+        $this->assertTrue($resualt);
+
+        $resualt = Number::isNumerals('1۱2ش3');
+        $this->assertFalse($resualt);
+    }
 }
