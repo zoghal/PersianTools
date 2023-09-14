@@ -1,9 +1,14 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 use Zoghal\PersianTools\Tools\Number;
 
 final class NumberTest extends TestCase
 {
+
+
     protected function _setUp(): void
     {
     }
@@ -15,14 +20,42 @@ final class NumberTest extends TestCase
      */
     public function testIsPersian(): void
     {
-        $resualt = Number::isPersian('۱۲۳۴۲۱');
-        $this->assertTrue($resualt);
-
-        $resualt = Number::isPersian('365');
+        $resualt = Number::isPersian(1029384756);
         $this->assertFalse($resualt);
+
+        $resualt = Number::isPersian('1029384756');
+        $this->assertFalse($resualt);
+
+        $resualt = Number::isPersian('۱۰۲۹۳۸۴۷۵۶');
+        $this->assertTrue($resualt);
 
         $resualt = Number::isPersian('٩٨٧٦٥٤٣٢١٠');
         $this->assertFalse($resualt);
+
+        $resualt = Number::isPersian('٣٢١123۳۲۱');
+        $this->assertFalse($resualt);
+
+        $resualt = Number::isPersian('٣a٢١123ب۳۲۱');
+        $this->assertFalse($resualt);
+    }
+
+
+    public function testHasPersian(): void
+    {
+        $resualt = Number::hasPersian('1029384756');
+        $this->assertFalse($resualt);
+
+        $resualt = Number::hasPersian('۱۰۲۹۳۸۴۷۵۶');
+        $this->assertTrue($resualt);
+
+        $resualt = Number::hasPersian('٩٨٧٦٥٤٣٢١٠');
+        $this->assertFalse($resualt);
+
+        $resualt = Number::hasPersian('٣٢١123۳۲۱');
+        $this->assertTrue($resualt);
+
+        $resualt = Number::hasPersian('٣a٢١123ب۳۲۱');
+        $this->assertTrue($resualt);
     }
 
     /**
@@ -32,15 +65,40 @@ final class NumberTest extends TestCase
      */
     public function testIsLatin(): void
     {
-        $resualt = Number::isLatin('۱۲۳۴۲۱');
-        $this->assertFalse($resualt);
-
-        $resualt = Number::isLatin('365');
+        $resualt = Number::isLatin('1029384756');
         $this->assertTrue($resualt);
+
+        $resualt = Number::isLatin('۱۰۲۹۳۸۴۷۵۶');
+        $this->assertFalse($resualt);
 
         $resualt = Number::isLatin('٩٨٧٦٥٤٣٢١٠');
         $this->assertFalse($resualt);
+
+        $resualt = Number::isLatin('٣٢١123۳۲۱');
+        $this->assertFalse($resualt);
+
+        $resualt = Number::isLatin('٣a٢١123ب۳۲۱');
+        $this->assertFalse($resualt);
     }
+
+    public function testHasLatin(): void
+    {
+        $resualt = Number::hasLatin('1029384756');
+        $this->assertTrue($resualt);
+
+        $resualt = Number::hasLatin('۱۰۲۹۳۸۴۷۵۶');
+        $this->assertFalse($resualt);
+
+        $resualt = Number::hasLatin('٩٨٧٦٥٤٣٢١٠');
+        $this->assertFalse($resualt);
+
+        $resualt = Number::hasLatin('٣٢١123۳۲۱');
+        $this->assertTrue($resualt);
+
+        $resualt = Number::hasLatin('٣a٢١123ب۳۲۱');
+        $this->assertTrue($resualt);
+    }
+
 
     /**
      * testIsArabic
@@ -49,13 +107,44 @@ final class NumberTest extends TestCase
      */
     public function testIsArabic(): void
     {
-        $resualt = Number::isArabic('۱۲۳۴۲۱');
+        $resualt = Number::isArabic('1029384756');
         $this->assertFalse($resualt);
 
-        $resualt = Number::isArabic('365');
-        $this->assertFalse($resualt);
+        $resualt = Number::isArabic('۱۰۲۹۳۸۴۷۵۶');
+        $this->assertTrue($resualt);
 
         $resualt = Number::isArabic('٩٨٧٦٥٤٣٢١٠');
+        $this->assertTrue($resualt);
+
+        $resualt = Number::isArabic('٣٢١123۳۲۱');
+        $this->assertFalse($resualt);
+
+        $resualt = Number::isArabic('٣a٢١123ب۳۲۱');
+        $this->assertFalse($resualt);
+
+        $resualt = Number::isArabic('٦٥٤۴۵۶');
+        $this->assertTrue($resualt);
+    }
+
+
+    public function testHasArabic(): void
+    {
+        $resualt = Number::hasArabic('1029384756');
+        $this->assertFalse($resualt);
+
+        $resualt = Number::hasArabic('۱۰۲۹۳۸۴۷۵۶');
+        $this->assertTrue($resualt);
+
+        $resualt = Number::hasArabic('٩٨٧٦٥٤٣٢١٠');
+        $this->assertTrue($resualt);
+
+        $resualt = Number::hasArabic('٣٢١123۳۲۱');
+        $this->assertTrue($resualt);
+
+        $resualt = Number::hasArabic('٣a٢١123ب۳۲۱');
+        $this->assertTrue($resualt);
+
+        $resualt = Number::hasArabic('٦٥٤۴۵۶');
         $this->assertTrue($resualt);
     }
 
@@ -64,15 +153,18 @@ final class NumberTest extends TestCase
      *
      * @return void
      */
-    public function testConvertToPersian(): void
+    public function testToPersianNumberals(): void
     {
-        $resualt = Number::convertToPersian('٠١٢٣٤٥٦٧٨٩');
-        $this->assertSame('۰۱۲۳۴۵۶۷۸۹', $resualt);
+        $resualt = Number::toPersianNumerals(123);
+        $this->assertSame('۱۲۳', $resualt);
 
-        $resualt = Number::convertToPersian('0123456789');
-        $this->assertSame('۰۱۲۳۴۵۶۷۸۹', $resualt);
+        $resualt = Number::toPersianNumerals('this number ٠١٢٣٤٥٦٧٨٩');
+        $this->assertSame('this number ۰۱۲۳۴۵۶۷۸۹', $resualt);
 
-        $resualt = Number::convertToPersian('٠١٢٣٤٥٦٧٨٩ | 9876543210');
+        $resualt = Number::toPersianNumerals('0123456789 این عدد');
+        $this->assertSame('۰۱۲۳۴۵۶۷۸۹ این عدد', $resualt);
+
+        $resualt = Number::toPersianNumerals('٠١٢٣٤٥٦٧٨٩ | 9876543210');
         $this->assertSame('۰۱۲۳۴۵۶۷۸۹ | ۹۸۷۶۵۴۳۲۱۰', $resualt);
     }
 
@@ -81,15 +173,19 @@ final class NumberTest extends TestCase
      *
      * @return void
      */
-    public function testConvertToArabic(): void
+    public function testToArabicNumerals(): void
     {
-        $resualt = Number::convertToArabic('٠١٢٣٤٥٦٧٨٩');
+
+        $resualt = Number::toArabicNumerals(1264);
+        $this->assertSame('١٢٦٤', $resualt);
+
+        $resualt = Number::toArabicNumerals('٠١٢٣٤٥٦٧٨٩');
         $this->assertSame('٠١٢٣٤٥٦٧٨٩', $resualt);
 
-        $resualt = Number::convertToArabic('0123456789');
+        $resualt = Number::toArabicNumerals('0123456789');
         $this->assertSame('٠١٢٣٤٥٦٧٨٩', $resualt);
 
-        $resualt = Number::convertToArabic('۰۱۲۳۴۵۶۷۸۹ | 9876543210');
+        $resualt = Number::toArabicNumerals('۰۱۲۳۴۵۶۷۸۹ | 9876543210');
         $this->assertSame('٠١٢٣٤٥٦٧٨٩ | ٩٨٧٦٥٤٣٢١٠', $resualt);
     }
 
@@ -98,15 +194,15 @@ final class NumberTest extends TestCase
      *
      * @return void
      */
-    public function testConvertToLatin(): void
+    public function testToLatinNumerals(): void
     {
-        $resualt = Number::convertToLatin('٠١٢٣٤٥٦٧٨٩');
+        $resualt = Number::toLatinNumerals('٠١٢٣٤٥٦٧٨٩');
         $this->assertSame('0123456789', $resualt);
 
-        $resualt = Number::convertToLatin('۰۱۲۳۴۵۶۷۸۹');
+        $resualt = Number::toLatinNumerals('۰۱۲۳۴۵۶۷۸۹');
         $this->assertSame('0123456789', $resualt);
 
-        $resualt = Number::convertToLatin('٠١٢٣٤٥٦٧٨٩ | ۹۸۷۶۵۴۳۲۱۰');
+        $resualt = Number::toLatinNumerals('٠١٢٣٤٥٦٧٨٩ | ۹۸۷۶۵۴۳۲۱۰');
         $this->assertSame('0123456789 | 9876543210', $resualt);
     }
 
@@ -115,24 +211,24 @@ final class NumberTest extends TestCase
      *
      * @return void
      */
-    public function testConvertToWord(): void
+    public function testToWord(): void
     {
-        $resualt = Number::convertToWord('١٢٣٤٥٦٧', 'fa_IR');
+        $resualt = Number::toWord('١٢٣٤٥٦٧', 'fa_IR');
         $this->assertSame('یک میلیون و دویست و سی و چهار هزار و پانصد و شصت و هفت', $resualt);
 
-        $resualt = Number::convertToWord('-١٢٣٤٥٦٧', 'fa_IR');
+        $resualt = Number::toWord('-١٢٣٤٥٦٧', 'fa_IR');
         $this->assertSame('منفی یک میلیون و دویست و سی و چهار هزار و پانصد و شصت و هفت', $resualt);
 
-        $resualt = Number::convertToWord('۱۲۳۴۵۶۷', 'ar');
+        $resualt = Number::toWord('۱۲۳۴۵۶۷', 'ar');
         $this->assertSame('مليون و مائتان و أربعة و ثلاثون ألف و خمسة مائة و سبعة و ستون', $resualt);
 
-        $resualt = Number::convertToWord('-۱۲۳۴۵۶۷', 'ar');
+        $resualt = Number::toWord('-۱۲۳۴۵۶۷', 'ar');
         $this->assertSame('ناقص مليون و مائتان و أربعة و ثلاثون ألف و خمسة مائة و سبعة و ستون', $resualt);
 
-        $resualt = Number::convertToWord(1234567, 'en');
+        $resualt = Number::toWord(1234567, 'en');
         $this->assertSame('one million two hundred thirty-four thousand five hundred sixty-seven', $resualt);
 
-        $resualt = Number::convertToWord(-1234567, 'en');
+        $resualt = Number::toWord(-1234567, 'en');
         $this->assertSame('minus one million two hundred thirty-four thousand five hundred sixty-seven', $resualt);
     }
 
@@ -152,7 +248,7 @@ final class NumberTest extends TestCase
         $resualt = Number::format(-1234567.217, 'en');
         $this->assertSame('-1,234,567.217', $resualt);
     }
-    
+
     /**
      * testFormatByCustomParameters
      *
@@ -169,5 +265,4 @@ final class NumberTest extends TestCase
         $resualt = Number::format(-1234567.217, 'en', 2, ' ^ ', ' <> ');
         $this->assertSame('-1 <> 234 <> 567 ^ 22', $resualt);
     }
-
 }

@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Zoghal\PersianTools\Tools;
 
@@ -10,86 +12,132 @@ class Number
     public const NumberLatin = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
     /**
-     * check number is Persian
+     * Checks if the given value contains only Persian numbers.
      *
      * @param  mixed $number
      * @return void
      */
     public static function isPersian($number): bool
     {
-        return (bool)preg_match("/[\x{06F0}-\x{06F9}]/iu", $number);
+        return (bool)preg_match("/^[\x{06F0}-\x{06F9}]+$/iu", (string)$number);
     }
 
     /**
-     * check number is Arabic
+     *  Checks if the given value has Persian numbers
+     *
+     * @param  mixed $number
+     * @return bool
+     */
+    public static function hasPersian($number): bool
+    {
+        return (bool)preg_match("/[\x{06F0}-\x{06F9}]+/iu", (string)$number);
+    }
+
+
+    /**
+     * Checks if the given value contains only Arabic Indic numbers.
+     *
+     * @param  mixed $number
+     * @return bool
+     */
+    public static function isIndicArabic($number): bool
+    {
+        return (bool)preg_match("/^[\x{0660}-\x{0669}]+$/iu", (string)$number);
+    }
+
+
+    /**
+     * Checks if the given value has Arabic Indic numbers
+     *
+     * @param  mixed $number
+     * @return bool
+     */
+    public static function hasIndicArabic($number): bool
+    {
+        return (bool)preg_match("/[\x{0660}-\x{0669}]+/iu", (string)$number);
+    }
+
+    /**
+     * Checks if the given value contains only Perso-Arabic{Persian,Arabic Indic,...} numbers.
      *
      * @param  mixed $number
      * @return void
      */
     public static function isArabic($number): bool
     {
-        return (bool)preg_match("/[\x{0660}-\x{0669}]/iu", $number);
+        return (bool)preg_match("/^[\x{0660}-\x{0669}\x{06F0}-\x{06F9}]+$/iu", (string)$number);
     }
 
     /**
-     * check number is Latin
+     * Checks if the given value has Perso-Arabic{Persian,Arabic Indic,...} numbers.
+     *
+     * @param  mixed $number
+     * @return bool
+     */
+    public static function hasArabic($number): bool
+    {
+        return (bool)preg_match("/[\x{0660}-\x{0669}\x{06F0}-\x{06F9}]+/iu", (string)$number);
+    }
+
+    /**
+     * Checks if the given value contains only latin numbers.
      *
      * @param  mixed $number
      * @return void
      */
     public static function isLatin($number): bool
     {
-        return (bool)preg_match("/[\x{0030}-\x{0039}]/iu", $number);
+        return (bool)preg_match("/^[0-9]+$/iu", (string)$number);
     }
 
     /**
-     * convert all numbers To Persian numbers
+     * Checks if the given value has latin numbers.
+     *
+     * @param  mixed $number
+     * @return bool
+     */
+    public static function hasLatin($number): bool
+    {
+        return (bool)preg_match("/[0-9]+/iu", (string)$number);
+    }
+
+
+    /**
+     * Converts all the numbers in the given value to Persian numbers.
      *
      * @param  mixed $number
      * @return void
      */
-    public static function convertToPersian($number): string
+    public static function toPersianNumerals($number): string
     {
-        if (self::isArabic($number)) {
-            $number = str_replace(self::NumberArabic, self::NumberPersian, $number);
-        }
-        if (self::isLatin($number)) {
-            $number = str_replace(self::NumberLatin, self::NumberPersian, $number);
-        }
+        $number = str_replace(self::NumberArabic, self::NumberPersian, (string)$number);
+        $number = str_replace(self::NumberLatin, self::NumberPersian, (string)$number);
         return $number;
     }
 
     /**
-     * convert all numbers To Arabic numbers
+     * Converts all the numbers in the given value to arabic numbers.
      *
      * @param  mixed $number
      * @return string
      */
-    public static function convertToArabic($number): string
+    public static function toArabicNumerals($number): string
     {
-        if (self::isPersian($number)) {
-            $number = str_replace(self::NumberPersian, self::NumberArabic, $number);
-        }
-        if (self::isLatin($number)) {
-            $number = str_replace(self::NumberLatin, self::NumberArabic, $number);
-        }
+        $number = str_replace(self::NumberPersian, self::NumberArabic, (string)$number);
+        $number = str_replace(self::NumberLatin, self::NumberArabic, (string)$number);
         return $number;
     }
 
     /**
-     * convertToLatin
+     * Converts all the numbers in the given value to latin numbers.
      *
      * @param  mixed $number
      * @return string
      */
-    public static function convertToLatin($number): string
+    public static function toLatinNumerals($number): string
     {
-        if (self::isPersian($number)) {
-            $number = str_replace(self::NumberPersian, self::NumberLatin, $number);
-        }
-        if (self::isArabic($number)) {
-            $number = str_replace(self::NumberArabic, self::NumberLatin, $number);
-        }
+        $number = str_replace(self::NumberPersian, self::NumberLatin, (string)$number);
+        $number = str_replace(self::NumberArabic, self::NumberLatin, (string)$number);
         return $number;
     }
 
@@ -100,10 +148,11 @@ class Number
      * @param  mixed $locale fa|ar|en
      * @return void
      */
-    public static function convertToWord($number, $locale = 'fa')
+    public static function toWord($number, $locale = 'fa')
     {
-        if (!is_numeric($number) && (self::isArabic($number) || self::isPersian($number))) {
-            $number = (float)self::convertToLatin($number);
+        if (self::hasArabic($number)) {
+          
+            $number = (int)self::toLatinNumerals($number);
         }
         return \NumberFormatter::create($locale, \NumberFormatter::SPELLOUT)->format($number);
     }
@@ -122,7 +171,7 @@ class Number
         }
 
         $fmt = \NumberFormatter::create($locale, \NumberFormatter::DECIMAL);
-        
+
         if ($decimalPoint !== null) {
             $fmt->setSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL, $decimalPoint);
         }
@@ -137,5 +186,4 @@ class Number
 
         return $fmt->format($number);
     }
-
 }
