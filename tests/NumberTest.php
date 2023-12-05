@@ -268,6 +268,11 @@ final class NumberTest extends TestCase
 
 
 
+    /**
+     * testIsNumberals
+     *
+     * @return void
+     */
     public function testIsNumberals(): void
     {
         $resualt = Number::isNumerals(123);
@@ -278,5 +283,20 @@ final class NumberTest extends TestCase
 
         $resualt = Number::isNumerals('1۱2ش3');
         $this->assertFalse($resualt);
+    }
+
+    
+    /**
+     * testCleanupNonNumerals
+     *
+     * @return void
+     */
+    public function testCleanupNonNumerals(): void
+    {
+        $resualt = Number::cleanupNonNumerals('1۱2ش3');
+        $this->assertSame('1۱23', $resualt);
+
+        $resualt = Number::cleanupNonNumerals('a123۲۱۴۲۳۴sdسیبیبل fsdf۴۵۴۵345345345');
+        $this->assertSame('123۲۱۴۲۳۴۴۵۴۵345345345', $resualt);
     }
 }

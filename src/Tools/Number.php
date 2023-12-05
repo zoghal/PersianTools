@@ -197,4 +197,16 @@ class Number
     {
         return (bool)preg_match("/^[\x{0660}-\x{0669}\x{06F0}-\x{06F9}0-9]+$/iu", (string)$number);
     }
+
+    
+    /**
+     * Clearing all non-number characters.
+     *
+     * @param  mixed $number
+     * @return bool
+     */
+    public static function cleanupNonNumerals($number): mixed
+    {
+        return preg_replace("/[^\x{0660}-\x{0669}\x{06F0}-\x{06F9}0-9]+/iu",'', (string)$number);
+    }
 }
