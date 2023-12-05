@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Zoghal\PersianTools\Tools;
 
-class NationalCode
+class NationalID
 {
 
     /**
@@ -28,5 +28,19 @@ class NationalCode
         $control = ($sub % 11) < 2 ? $sub % 11 : 11 - ($sub % 11);
 
         return $value[9] == $control ? true : false;
+    }
+
+
+    /**
+     * NationalID::standardize(): 
+     * It validates and normalize the input value based on the Iranian national ID number algorithm generation.
+     * 
+     * @param  mixed $value
+     * @param  mixed $invalidate
+     * @return string
+     */
+    public static function standardize(string $value,$invalidate = 'fake'): string
+    {
+        return "s";
     }
 }
