@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Zoghal\PersianTools\Tools;
 
+use Zoghal\PersianTools\Tools\Number;
+
 class NationalID
 {
+
+
 
     /**
      * validate Checks if the given ID number is valid according to the Iranian national ID number format.
@@ -13,12 +17,13 @@ class NationalID
      * @param  mixed $value
      * @return bool
      */
-    public static function validate(string $value): bool
+    public static function validate(string $value): mixed
     {
-        if (preg_match('/^\d{8,10}$/', $value) == false) return false;
-        if (preg_match('/^[0]{10}|[1]{10}|[2]{10}|[3]{10}|[4]{10}|[5]{10}|[6]{10}|[7]{10}|[8]{10}|[9]{10}$/', $value)) return false;
+        $value = self::standardize($value);
+        if (!self::checkValidPattern($value)) {
+            return false;
+        }
 
-        $value = str_pad($value, 10, '0', STR_PAD_LEFT);
 
         $sub = 0;
         for ($i = 0; $i <= 8; $i++) {
@@ -39,8 +44,43 @@ class NationalID
      * @param  mixed $invalidate
      * @return string
      */
-    public static function standardize(string $value,$invalidate = 'fake'): string
+    public static function standardize(string $value, $returnInvalid = false): string
     {
-        return "s";
+        $origin = $value;
+        $value = Number::cleanupNonNumerals($value);
+        $value = Number::toLatinNumerals($value);
+        $value = preg_replace("/^[0]+/iu", '', $value);
+
+        if (strlen($value) < 10) {
+            $value = str_pad($value, 10, "0", STR_PAD_LEFT);
+        }
+
+        if ($returnInvalid && !self::checkValidPattern($value)) {
+            return $origin;
+        }
+
+        return $value;
+    }
+
+
+    /**
+     * Check if the given value matches any of the invalid patterns.
+     *
+     * @param string $value The value to be checked.
+     * @return bool Returns true if the value does not match any of the invalid patterns, false otherwise.
+     */
+    public static function checkValidPattern(string $value): bool
+    {
+        $invalidPatterns = [
+            '/^000/',
+            '/([0]{6,10}+)|[1]{6,10}|[2]{6,10}|[3]{6,10}|[4]{6,10}|[5]{6,10}|[6]{6,10}|[7]{6,10}|[8]{6,10}|[9]{6,10}/',
+        ];
+
+        foreach ($invalidPatterns as $pattern) {
+            if (preg_match($pattern, $value) === 1) {
+                return false;
+            }
+        }
+        return true;
     }
 }
