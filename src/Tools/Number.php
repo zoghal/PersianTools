@@ -203,9 +203,9 @@ class Number
      * Clearing all non-number characters.
      *
      * @param  mixed $number
-     * @return bool
+     * @return string
      */
-    public static function cleanupNonNumerals($number): mixed
+    public static function cleanupNonNumerals($number): string
     {
         return preg_replace("/[^\x{0660}-\x{0669}\x{06F0}-\x{06F9}0-9]+/iu",'', (string)$number);
     }
