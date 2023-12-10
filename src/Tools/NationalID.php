@@ -9,21 +9,34 @@ use Zoghal\PersianTools\Tools\Number;
 class NationalID
 {
 
+    public static $cities = [];
 
+
+    /**
+     * init
+     *
+     * @return void
+     */
+    private static function init()
+    {
+        if (empty(self::$cities)) {
+            self::$cities = include_once(__DIR__ . '/../Datasets/NationalIdByCities.php');
+        }
+    }
 
     /**
      * validate Checks if the given ID number is valid according to the Iranian national ID number format.
      *
-     * @param  mixed $value
+     * @param  string $value
+     * @param  bool $validateCityCode
      * @return bool
      */
-    public static function validate(string $value): mixed
+    public static function validate(string $value, bool $validateCityCode = false): bool
     {
         $value = self::standardize($value);
         if (!self::checkValidPattern($value)) {
             return false;
         }
-
 
         $sub = 0;
         for ($i = 0; $i <= 8; $i++) {
@@ -32,7 +45,17 @@ class NationalID
 
         $control = ($sub % 11) < 2 ? $sub % 11 : 11 - ($sub % 11);
 
-        return $value[9] == $control ? true : false;
+        $isValid =  $value[9] == $control ? true : false;
+
+        if (!$isValid) {
+            return false;
+        }
+
+        if (!$validateCityCode) {
+            return $isValid;
+        }
+
+        return is_string(self::getInfo($value)) ? true : false;
     }
 
 
@@ -82,5 +105,19 @@ class NationalID
             }
         }
         return true;
+    }
+
+    /**
+     * getInfo
+     *
+     * @param  string $value The value to be checked.
+     * @return false|string Returns the city name if the first three digits of the value match the cities code, false otherwise
+     */
+    public static function getInfo(string $value): mixed
+    {
+        self::init();
+        $value = trim($value);
+        $code = substr($value, 0, 3);
+        return array_key_exists($code, self::$cities) ? self::$cities[$code] : false;
     }
 }

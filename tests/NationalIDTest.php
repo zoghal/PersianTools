@@ -11,7 +11,6 @@ final class NationalIDTest extends TestCase
     {
     }
 
-
     /**
      * testNationalIDValid
      *
@@ -65,6 +64,39 @@ final class NationalIDTest extends TestCase
         $this->assertTrue($resualt);
     }
 
+    /**
+     * testNationalIDValidWithCheckCity
+     *
+     * @return void
+     */
+    public function testNationalIDValidWithCheckCity(): void
+    {
+
+        $resualt = NationalID::validate('6450641150');
+        $this->assertTrue($resualt);
+
+        $resualt = NationalID::validate('6450641150', true);
+        $this->assertFalse($resualt);
+
+        $resualt = NationalID::validate('4849954251');
+        $this->assertTrue($resualt);
+
+        $resualt = NationalID::validate('4849954251', true);
+        $this->assertTrue($resualt);
+
+        $resualt = NationalID::validate('4949956590');
+        $this->assertTrue($resualt);
+
+        $resualt = NationalID::validate('4949956590', true);
+        $this->assertFalse($resualt);
+
+
+        $resualt = NationalID::validate('3871003215');
+        $this->assertFalse($resualt);
+
+        $resualt = NationalID::validate('3871003215', true);
+        $this->assertFalse($resualt);
+    }
 
     /**
      * testNationalIDStandardize
@@ -91,7 +123,6 @@ final class NationalIDTest extends TestCase
         $resualt = NationalID::standardize('asd4', true);
         $this->assertSame('asd4', $resualt);
     }
-
 
     /**
      * testCheckPattern
@@ -120,5 +151,19 @@ final class NationalIDTest extends TestCase
 
         $resualt = NationalID::checkValidPattern('3339999444');
         $this->assertTrue($resualt);
+    }
+
+    /**
+     * testGetInfo
+     *
+     * @return void
+     */
+    public function testGetInfo(): void
+    {
+        $resualt = NationalID::getInfo('2181267235');
+        $this->assertSame('مازندران::بهشهر', $resualt);
+
+        $resualt = NationalID::getInfo('5600084684');
+        $this->assertFalse($resualt);
     }
 }
